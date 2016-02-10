@@ -1,7 +1,19 @@
 class User < ActiveRecord::Base
   include RatingAverage
-  has_many :ratings, dependent: :destroy
-  #has many :beers, through: :ratings
-  # käyttäjällä on monta ratingia
 
+  validates :username, uniqueness: true,
+                       length: { minimum: 3, maximum: 15 }
+
+  validates :password, length: { minimum: 4 },
+                       format: {
+                          with: /\d.*[A-Z]|[A-Z].*\d/,
+                          message: "has to contain one number and one upper case letter"
+                       }
+
+  has_many :ratings, dependent: :destroy
+  has_many :beers, through: :ratings
+  has_many :memberships
+  has_many :beer_clubs, through: :memberships
+
+  has_secure_password
 end
