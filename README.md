@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/ollivaan/ratebeer-public.png)](https://travis-ci.org/ollivaan/ratebeer-public)
