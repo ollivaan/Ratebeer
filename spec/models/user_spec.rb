@@ -14,6 +14,19 @@ RSpec.describe User, type: :model do
     expect(User.count).to eq(0)
   end
 
+  it "is not saved when password is too short" do
+    user = User.create username:"Pekka", password:"pe", password_confirmation:"pe"
+    expect(user).not_to be_valid
+    expect(User.count).to eq(0)
+  end
+
+  it "is not saved when there is no numbers in password" do
+    user = User.create username:"Pekka", password:"Secret", password_confirmation:"Secret"
+
+    expect(user).not_to be_valid
+    expect(User.count).to eq(0)
+  end
+
   describe "with a proper password" do
     let(:user){ User.create username:"Pekka", password:"Secret1", password_confirmation:"Secret1" }
 
