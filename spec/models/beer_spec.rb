@@ -25,5 +25,4 @@ RSpec.describe Beer, type: :model do
     expect(Beer.count).to eq(0)
   end
 
-
 end
