@@ -52,5 +52,17 @@ describe "Rating" do
       expect(page).to have_content "#{beer1.name} 20"
       expect(page).not_to have_content "#{beer2.name} 40"
     end
+    it "rating gets deleted by user" do
+      visit user_path(user)
+
+      expect{
+        find_link('delete').click
+      }.to change{Rating.count}.from(2).to(1)
+      expect(page).to have_content user.username
+      expect(page).to have_content "Has made 0 rating"
+      expect(page).not_to have_content "#{beer1.name}: 20"
+      expect(page).not_to have_content "#{beer2.name}: 40"
+    end
+
   end
   end
