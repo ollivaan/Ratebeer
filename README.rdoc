@@ -2,3 +2,4 @@
  Linkki sovellukseen: https://gentle-woodland-53095.herokuapp.com/beers
                       https://gentle-woodland-53095.herokuapp.com/breweries
 
+[![Build Status](https://travis-ci.org/ollivaan/ratebeer-public.png)](https://travis-ci.org/ollivaan/ratebeer-public)]
