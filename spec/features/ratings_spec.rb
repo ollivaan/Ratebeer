@@ -29,4 +29,28 @@ describe "Rating" do
     expect(beer1.ratings.count).to eq(1)
     expect(beer1.average_rating).to eq(15.0)
   end
-end
+
+  describe "when exists multiple different users with ratings" do
+    let!(:user2) { FactoryGirl.create(:user, username:"Kalle") }
+    let!(:rating1) { FactoryGirl.create(:rating, score:20, beer:beer1, user:user) }
+    let!(:rating2) { FactoryGirl.create(:rating, score:40, beer:beer2, user:user2) }
+
+    it "all ratings show up correctly on ratings page" do
+      visit ratings_path
+
+      expect(page).to have_content "List of ratings"
+      expect(page).to have_content "Number of ratings 2"
+      expect(page).to have_content "#{beer1.name} 20"
+      expect(page).to have_content "#{beer2.name} 40"
+    end
+
+    it "user ratings show up correctly on his page" do
+      visit user_path(user)
+
+      expect(page).to have_content user.username
+      expect(page).to have_content "Has made 1 rating"
+      expect(page).to have_content "#{beer1.name} 20"
+      expect(page).not_to have_content "#{beer2.name} 40"
+    end
+  end
+  end
