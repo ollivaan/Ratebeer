@@ -17,3 +17,18 @@
     padding: 10px;
     background: #EFEFEF;
 }
+body {
+    background-image: url("beer-texture.png");
+    /*background-repeat: no-repeat;*/
+
+
+}
+th {
+    color : navy;
+}
+h1 {
+    color : #dd1144;
+}
+tr {
+    color : #990073;
+}
