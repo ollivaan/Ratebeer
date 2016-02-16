@@ -9,7 +9,3 @@
     <li> <%= rating %> <%= link_to rating.user.username, rating.user %></li>
   <% end %>
 </ul>
-
-<% if current_user %>
-<%= link_to 'new_rating', new_rating_path %>
-<%end%>

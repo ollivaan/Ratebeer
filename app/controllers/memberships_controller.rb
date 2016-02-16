@@ -1,7 +1,5 @@
 class MembershipsController < ApplicationController
   before_action :set_membership, only: [:show, :edit, :update, :destroy]
-  before_action :ensure_that_signed_in, except: [:index, :show]
-
 
   # GET /memberships
   # GET /memberships.json
@@ -32,7 +30,7 @@ class MembershipsController < ApplicationController
     if not current_user.in? club.members and @membership.save
       current_user.memberships << @membership
       @membership.save
-      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club}"
+      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club.name}"
     else
       @clubs = BeerClub.all
       render :new
