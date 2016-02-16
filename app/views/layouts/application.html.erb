@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<!--<html>-->
 <head>
   <title>Ratebeer</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -15,6 +15,7 @@
     <%= link_to 'ratings', ratings_path %>
     <%= link_to 'users', users_path %>
     <%= link_to 'clubs', beer_clubs_path %>
+    <%= link_to 'places', places_path %>
     |
   <% if current_user %>
     <%= link_to current_user.username, current_user %>
@@ -33,4 +34,4 @@
   <%= yield %>
 
 </body>
-</html>
+<!--</html>-->
