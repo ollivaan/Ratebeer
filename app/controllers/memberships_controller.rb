@@ -27,14 +27,16 @@ class MembershipsController < ApplicationController
   def create
     @membership = Membership.new(membership_params)
     club = BeerClub.find membership_params[:beer_club_id]
-    if not current_user.in? club.members and @membership.save
-      current_user.memberships << @membership
-      @membership.save
-      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club.name}"
-    else
-      @clubs = BeerClub.all
-      render :new
-    end
+    respond_to do |format|
+      if @membership.save
+        format.html { redirect_to BeerClub.find_by(id: @membership.beer_club_id), notice: "#{current_user.username}, welcome to the club!" }
+        format.json { render :show, status: :created, location: @membership }
+      else
+        @clubs = BeerClub.all
+        format.html { render :new }
+        format.json { render json: @membership.errors, status: :unprocessable_entity }
+      end
+      end
   end
 
   # PATCH/PUT /memberships/1
