@@ -27,16 +27,14 @@ class MembershipsController < ApplicationController
   def create
     @membership = Membership.new(membership_params)
     club = BeerClub.find membership_params[:beer_club_id]
-    respond_to do |format|
-      if @membership.save
-        format.html { redirect_to BeerClub.find_by(id: @membership.beer_club_id), notice: "#{current_user.username}, welcome to the club!" }
-        format.json { render :show, status: :created, location: @membership }
-      else
-        @clubs = BeerClub.all
-        format.html { render :new }
-        format.json { render json: @membership.errors, status: :unprocessable_entity }
-      end
-      end
+    if not current_user.in? club.members and @membership.save
+      current_user.memberships << @membership
+      @membership.save
+      redirect_to beer_club_path(club), notice: "Welcome to #{@membership.beer_club.name}"
+    else
+      @clubs = BeerClub.all
+      render :new
+    end
   end
 
   # PATCH/PUT /memberships/1
@@ -58,7 +56,7 @@ class MembershipsController < ApplicationController
   def destroy
     @membership.destroy
     respond_to do |format|
-      format.html { redirect_to memberships_url, notice: 'Membership was successfully destroyed.' }
+      format.html { redirect_to user_path(@membership.user), notice: 'Membership was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

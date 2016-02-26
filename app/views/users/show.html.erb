@@ -9,7 +9,7 @@
 </p>
 
 <% if @user.ratings.any? %>
-  <p>Favorite style <%= @user.favorite_style %></p>
+  <p>Favorite style <%= @user.favorite_style.name %></p>
 
   <p>Favorite brewery <%= @user.favorite_brewery.name %></p>
 <% end %>
@@ -30,7 +30,8 @@
     <li>
       <%= rating %>
       <% if @user == current_user %>
-        <%= link_to 'delete', rating, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'delete', rating,class:"btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+
       <% end %>
     </li>
   <% end %>
@@ -39,4 +40,5 @@
 <% if @user == current_user %>
   <%= link_to 'Delete account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
   <%= link_to 'Edit', edit_user_path(@user) %>
+
 <% end %>
