@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   resources :memberships
   resources :users
   resource :session, only: [:new, :create, :destroy]
+  resources :breweries do
+    post 'toggle_activity', on: :member
+  end
+
 
   get 'signup', to: 'users#new'
   get 'signin', to: 'sessions#new'

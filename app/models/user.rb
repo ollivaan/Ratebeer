@@ -47,4 +47,15 @@ class User < ActiveRecord::Base
     ratings_of = ratings.select{ |r| r.beer.brewery==brewery }
     ratings_of.map(&:score).inject(&:+) / ratings_of.count.to_f
   end
+
+
+  def self.top_raters(n)
+    User.all.sort_by{ |u| -(u.ratings.count||0) }.first(n)
+  end
+  def favorite(category)
+    return nil if ratings.empty?
+
+    rated = ratings.map{ |r| r.beer.send(category) }.uniq
+    rated.sort_by { |item| -rating_of(category, item) }.first
+  end
 end
