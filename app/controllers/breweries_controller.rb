@@ -1,30 +1,49 @@
 class BreweriesController < ApplicationController
   before_action :set_brewery, only: [:show, :edit, :update, :destroy]
-  before_action :ensure_that_signed_in, except: [:index, :show]
+  before_action :ensure_that_signed_in, except: [:index, :show, :list, :nglist]
+  before_action :ensure_that_admin, only: [:destroy]
 
+  def nglist
 
+  end
   # GET /breweries
   # GET /breweries.json
   def index
-    #eka pois?
-    # @breweries = Brewery.all
+    @brewery = Brewery.all
     @active_breweries = Brewery.active
     @retired_breweries = Brewery.retired
+
+    order = params[:order] || 'name'
+
+    if order == params[:order]
+      if session[:order] == order
+        @active_breweries = case order
+                              when 'name' then @active_breweries.sort_by{ |b| b.name }.reverse!
+                              when 'year' then @active_breweries.sort_by{ |b| b.year }.reverse!
+                            end
+
+        @retired_breweries = case order
+                               when 'name' then @retired_breweries.sort_by{ |b| b.name }.reverse!
+                               when 'year' then @retired_breweries.sort_by{ |b| b.year }.reverse!
+                             end
+      else
+        @active_breweries = case order
+                              when 'name' then @active_breweries.sort_by{ |b| b.name }
+                              when 'year' then @active_breweries.sort_by{ |b| b.year }
+                            end
+
+        @retired_breweries = case order
+                               when 'name' then @retired_breweries.sort_by{ |b| b.name }
+                               when 'year' then @retired_breweries.sort_by{ |b| b.year }
+                             end
+        session[:order] = order
+      end
+    end
   end
 
-  # GET /breweries/1
-  # GET /breweries/1.json
   def show
   end
 
-  def toggle_activity
-    brewery = Brewery.find(params[:id])
-    brewery.update_attribute :active, (not brewery.active)
-
-    new_status = brewery.active? ? "active" : "retired"
-
-    redirect_to :back, notice:"brewery activity status changed to #{new_status}"
-  end
   # GET /breweries/new
   def new
     @brewery = Brewery.new
@@ -72,6 +91,15 @@ class BreweriesController < ApplicationController
       format.html { redirect_to breweries_url, notice: 'Brewery was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def toggle_activity
+    brewery = Brewery.find(params[:id])
+    brewery.update_attribute :active, (not brewery.active)
+
+    new_status = brewery.active? ? "active" : "retired"
+
+    redirect_to :back, notice:"brewery activity status changed to #{new_status}"
   end
 
   private

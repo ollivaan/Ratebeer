@@ -1,19 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :toggle_ban]
-  before_action :ensure_that_user_admin, only: :toggle_ban
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
   # GET /users
   # GET /users.json
   def index
     @users = User.all
   end
-  def toggle_ban
-    user = User.find(params[:id])
-    user.update_attribute :banned, (not user.banned)
 
-    new_status = user.banned? ? "frozen" : "unfrozen"
-
-    redirect_to :back, notice:"User has been #{new_status}"
-  end
   # GET /users/1
   # GET /users/1.json
   def show
@@ -71,6 +64,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def toggle_lock
+    user = User.find(params[:id])
+    user.update_attribute :locked, (not user.locked)
+
+    new_status = user.locked? ? "unlocked" : "locked"
+
+    redirect_to :back, notice:"user account #{new_status}"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -81,5 +83,4 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :password, :password_confirmation)
     end
-
 end

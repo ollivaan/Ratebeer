@@ -12,6 +12,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
+gem 'jquery-turbolinks'
  gem 'therubyracer', platforms: :ruby
 group :development, :test do
   gem 'sqlite3'
@@ -21,7 +22,7 @@ group :production do
    gem 'pg'
    gem 'rails_12factor'
 end
-
+gem 'rack-mini-profiler'
 ruby '2.3.0'
 
 # Use jquery as the JavaScript library
@@ -52,6 +53,7 @@ group :development do
   gem 'rails_layout'
 end
 
+# gem 'jquery-turbolinks'
 
 #group :development, :test do
  # gem 'factory_girl_rails'

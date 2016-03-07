@@ -1,0 +1,39 @@
+<script>
+  var myApp = angular.module('myApp', []);
+
+  myApp.controller("BreveriesController", function ($scope, $http) {
+    $http.get('breweries.json').success( function(data, status, headers, config) {
+      $scope.beers = data;
+    });
+
+    $scope.order = 'name';
+
+    $scope.sort_by = function (order){
+      $scope.order = order;
+      console.log(order);
+    }
+
+    $scope.searchText = '';
+  });
+</script>
+
+<h2>Breweries</h2>
+
+<div ng-app="myApp" ng-controller="BreweriesController">
+
+  <!--search:  <input ng-model="searchText">-->
+
+  <table class="table table-hover">
+    <thead>
+    <th> <a ng-click="sort_by('name')">name</a> </th>
+    <!--<th> <a ng-click="sort_by('style.name')">style</a> </th>-->
+    <th> <a ng-click="sort_by('brewery.year')">year</a> </th>
+    </thead>
+    <tr ng-repeat="breweries | orderBy:order">
+      <td>{{brewery.name}}</td>
+      <td>{{brewery.year}}</td>
+      <!--<td>{{beer.brewery.name}}</td>-->
+    </tr>
+  </table>
+
+</div>
